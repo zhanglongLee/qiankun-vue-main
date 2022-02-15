@@ -1,125 +1,101 @@
 <template>
-  <a-config-provider prefixCls="cns">
-    <section id="cns-main-app">
-      <section class="cns-menu-wrapper">
-        <main-menu :menus="menus" />
-      </section>
-      <section class="cns-frame-wrapper">
-        <!-- 主应用渲染区，用于挂载主应用路由触发的组件 -->
-        <router-view v-show="$route.name" />
+    <el-container class="main-container">
+        <el-aside class="left">
+            <el-menu
+                default-active="/"
+                class="el-menu-vertical-demo"
+                :router="true"
+                background-color="#545c64"
+                text-color="#fff"
+            >
+                <el-menu-item :index="item.path" v-for="(item,index) in menus" :key="index">
+                    <i class="el-icon-menu"></i>
+                    <span slot="title">{{item.title}}</span>
+                </el-menu-item>
+            </el-menu>
+        </el-aside>
 
-        <!-- 子应用渲染区，用于挂载子应用节点 -->
-        <section v-show="!$route.name" id="frame"></section>
-      </section>
-    </section>
-  </a-config-provider>
+        <el-container>
+            <el-header style="text-align: right; font-size: 12px">
+                <el-dropdown>
+                    <i class="el-icon-setting" style="margin-right: 15px"></i>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>查看</el-dropdown-item>
+                        <el-dropdown-item>新增</el-dropdown-item>
+                        <el-dropdown-item>删除</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <span>王小虎</span>
+            </el-header>
+
+            <el-main>
+                <!-- 主应用渲染区，用于挂载主应用路由触发的组件 -->
+                <router-view v-show="$route.name"></router-view>
+                <!-- 子应用渲染区，用于挂载子应用路由触发的组件 -->
+                <div v-show="!$route.name" id="frame"></div>
+            </el-main>
+        </el-container>
+    </el-container>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-
-import MainMenu from "@/components/menu/index.vue";
-
-@Component({
-  components: {
-    MainMenu
-  }
-})
-export default class App extends Vue {
-  /**
-   * 菜单列表
-   * key: 唯一 Key 值
-   * title: 菜单标题
-   * path: 菜单对应的路径
-   */
-  menus = [
-    {
-      key: "Home",
-      title: "主页",
-      path: "/"
+<script>
+export default {
+    data() {
+        const item = {
+            date: "2016-05-02",
+            name: "王小虎",
+            address: "上海市普陀区金沙江路 1518 弄",
+        };
+        return {
+            menus: [
+                {
+                    key: "VueMicroApp",
+                    title: "Vue 用户",
+                    path: "/vue/user",
+                },
+                {
+                    key: "VueMicroAppList",
+                    title: "Vue 列表页",
+                    path: "/vue/about",
+                },
+            ],
+            tableData: Array(20).fill(item),
+        };
     },
-    {
-      key: "VueMicroApp",
-      title: "用户中心",
-      path: "/vue/user"
-    },
-    {
-      key: "VueMicroAppList",
-      title: "Vue 列表页",
-      path: "/vue/list"
-    },
-    // {
-    //   key: "publicOpinionMonitoring",
-    //   title: "监测预警",
-    //   path: "/esp-module-publicopinionmonitoring/monitorWarning"
-    // },
-    // {
-    //   key: "ReactMicroApp",
-    //   title: "React 主页",
-    //   path: "/react"
-    // },
-    // {
-    //   key: "ReactMicroAppList",
-    //   title: "React 列表页",
-    //   path: "/react/list"
-    // },
-    // {
-    //   key: "AngularMicroApp",
-    //   title: "Angular 主页",
-    //   path: "/angular"
-    // },
-    // {
-    //   key: "AngularMicroAppList",
-    //   title: "Angular 列表页",
-    //   path: "/angular/list"
-    // },
-    // {
-    //   key: "StaticMicroApp",
-    //   title: "Static 微应用",
-    //   path: "/static"
-    // }
-  ];
-}
+    watch:{
+        $route(){
+            console.log(this.$route)
+        }
+    }
+};
 </script>
-
-<style lang="less" scoped>
-#cns-main-app {
-  height: 100%;
-  position: relative;
-  .cns-menu-wrapper {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 40;
-    width: 172px;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-  .cns-nav-wrapper {
-    position: fixed;
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+.main-container{
     width: 100%;
-    min-width: 1060px;
-    padding-left: 172px;
-    left: 0;
-    top: 0;
-    z-index: 30;
-  }
+    height: 100vh;
 }
-
-.cns-frame-wrapper {
-  padding-left: 172px;
-  flex-grow: 1;
-  height: 100%;
-  width: 100%;
-  position: relative;
-}
-
-#cns-frame {
-  width: 100%;
-  height: 100%;
-  > :first-child {
+.left {
+    width: 200px !important;
     height: 100%;
-  }
+    background-color: #545c64;
+}
+.el-menu-vertical-demo .is-active {
+    background: #89baeb !important;
+    color: #fff !important;
+}
+.el-menu-vertical-demo .el-menu-item:hover {
+    background: #89baeb !important;
+}
+.el-header {
+    background-color: #000;
+    color: #fff;
+    line-height: 60px;
+}
+
+.el-aside {
+    color: #333;
 }
 </style>

@@ -1,16 +1,9 @@
-const path = require("path");
-
 module.exports = {
-  configureWebpack: {
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "src"),
-      },
+    devServer: {
+        hot: true,
+        open: true,
+        port: 9999,
+        host: "127.0.0.1"
     },
-  },
-  devServer: {
-    port: 9999,
-    open: true,
-    disableHostCheck: true,
-  },
-};
+    lintOnSave: false
+}
